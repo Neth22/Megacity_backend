@@ -1,39 +1,39 @@
-# name: Deploy to Github Actions
+name: Deploy to Github Actions
 
-# on:
-#   push:
-#     branches: [main]
+on:
+  push:
+    branches: [main]
 
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-#     steps:
+    steps:
       
-#       - name: Checkout Code
-#         uses: actions/checkout@v3
-
-      
-#       - name: Set up JDK 17
-#         uses: actions/setup-java@v3
-#         with:
-#           distribution: 'temurin'
-#           java-version: '17'
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
       
-#       -  name: Build with Maven
-#          run: mvn clean install -DskipTests
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
       
-#       -   name: Log into Docker Hub
-#           run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      -  name: Build with Maven
+         run: mvn clean install -DskipTests
 
       
-#       -    name: Docker Build
-#            run: |
-#             docker build -t ${{ secrets.DOCKER_USERNAME }}/mega-city-cab-service-backend .
+      -   name: Log into Docker Hub
+          run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       
-#       -     name: Publishing Docker Image
-#             run: |
-#              docker push ${{ secrets.DOCKER_USERNAME }}/mega-city-cab-service-backend:latest
+      -    name: Docker Build
+           run: |
+            docker build -t ${{ secrets.DOCKER_USERNAME }}/mega-city-cab-service-backend .
+
+      
+      -     name: Publishing Docker Image
+            run: |
+             docker push ${{ secrets.DOCKER_USERNAME }}/mega-city-cab-service-backend:latest
