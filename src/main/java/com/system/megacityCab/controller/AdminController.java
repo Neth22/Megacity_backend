@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import com.system.megacityCab.model.Admin;
 import com.system.megacityCab.service.AdminService;
 
@@ -24,35 +23,32 @@ import com.system.megacityCab.service.AdminService;
 
 public class AdminController {
 
-   @Autowired
-   private AdminService adminService;
+    @Autowired
+    private AdminService adminService;
 
-   @GetMapping("/viewAdmins")
-   public ResponseEntity<List<Admin>> getAllAdmins() {
-       List<Admin> admins = adminService.getAllAdmins();
-       return new ResponseEntity<>(admins, HttpStatus.OK);
-   }
+    @GetMapping("/viewAdmins")
+    public ResponseEntity<List<Admin>> getAllAdmins() {
+        List<Admin> admins = adminService.getAllAdmins();
+        return new ResponseEntity<>(admins, HttpStatus.OK);
+    }
 
-   @GetMapping("/{adminId}")
-   public ResponseEntity<Admin> getAdminById(@PathVariable String adminId) {
-       Admin admin = adminService.getAdminById(adminId);
-       return new ResponseEntity<>(admin, HttpStatus.OK);
-   }
+    @GetMapping("/{adminId}")
+    public ResponseEntity<Admin> getAdminById(@PathVariable String adminId) {
+        Admin admin = adminService.getAdminById(adminId);
+        return new ResponseEntity<>(admin, HttpStatus.OK);
+    }
 
-   @PostMapping("/createAdmin")
-   public ResponseEntity<Admin> createAdmin(@RequestBody Admin admin) {
-       Admin createdAdmin = adminService.createAdmin(admin);
-       return new ResponseEntity<>(createdAdmin, HttpStatus.CREATED);
-   }
+    @PostMapping("/createAdmin")
+    public ResponseEntity<?> createAdmin(@RequestBody Admin admin) {
+        return adminService.createAdmin(admin);
+    }
 
-   @PutMapping("/updateAdmin/{adminId}")
-   public ResponseEntity<Admin> updateAdmin(
-           @PathVariable String adminId,
-           @RequestBody Admin admin) {
-       Admin updatedAdmin = adminService.updateAdmin(adminId, admin);
-       return new ResponseEntity<>(updatedAdmin, HttpStatus.OK);
-   }
+    @PutMapping("/updateAdmin/{adminId}")
+    public ResponseEntity<Admin> updateAdmin(
+            @PathVariable String adminId,
+            @RequestBody Admin admin) {
+        Admin updatedAdmin = adminService.updateAdmin(adminId, admin);
+        return new ResponseEntity<>(updatedAdmin, HttpStatus.OK);
+    }
 
-   
-    
 }
