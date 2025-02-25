@@ -2,6 +2,7 @@ package com.system.megacityCab.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import com.system.megacityCab.model.Booking;
 import com.system.megacityCab.model.BookingStatus;
@@ -9,7 +10,7 @@ import com.system.megacityCab.model.BookingStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
+@Repository
 public interface BookingRepository extends MongoRepository<Booking,String> {
 
 

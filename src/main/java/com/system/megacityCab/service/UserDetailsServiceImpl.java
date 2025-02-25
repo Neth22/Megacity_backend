@@ -54,10 +54,10 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 
         }
 
-        Optional<Driver> driver = driverRepository.findByDriverEmail(email);
+        Optional<Driver> driver = driverRepository.findByEmail(email);
 
         if(driver.isPresent()){
-            return User.withUsername(driver.get().getDriverEmail())
+            return User.withUsername(driver.get().getEmail())
             .password(driver.get().getPassword())
             .roles("DRIVER")
             .build();

@@ -23,7 +23,7 @@ public class Driver {
 
     private String driverPhoneNum;
 
-    private String driverEmail;
+    private String email;
 
     private String password;
 

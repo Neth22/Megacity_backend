@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import com.system.megacityCab.model.Customer;
 import com.system.megacityCab.service.CustomerService;
+
+
 
 @RequestMapping("/auth/customers")
 @RestController
@@ -34,23 +37,29 @@ public class CustomerController {
 
     @GetMapping("/getCustomer/{id}")
     public ResponseEntity<Customer> getCustomerById(@PathVariable("id") String customerId) {
-        return new ResponseEntity<>(customerService.getCustomerById(customerId), HttpStatus.OK);
+        Customer customer = customerService.getCustomerById(customerId);
+        return customer != null ? ResponseEntity.ok(customer) : ResponseEntity.notFound().build();
     }
 
     @PostMapping("/createCustomer")
-    public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
-        return new ResponseEntity<>(customerService.createCustomer(customer), HttpStatus.CREATED);
+    public ResponseEntity<?> createCustomer(@RequestBody Customer customer) {
+        return customerService.createCustomer(customer);
     }
 
     @PutMapping("/updateCustomer/{id}")
     public ResponseEntity<Customer> updateCustomer(@PathVariable("id") String customerId, @RequestBody Customer customer) {
-        return new ResponseEntity<>(customerService.updateCustomer(customerId, customer), HttpStatus.OK);
+        try {
+            Customer updatedCustomer = customerService.updateCustomer(customerId, customer);
+            return ResponseEntity.ok(updatedCustomer);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/deleteCustomer/{id}")
     public ResponseEntity<Void> deleteCustomer(@PathVariable("id") String customerId) {
         customerService.deleteCustomer(customerId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 
  
