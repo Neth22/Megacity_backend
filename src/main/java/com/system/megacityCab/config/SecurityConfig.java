@@ -38,6 +38,7 @@ public class SecurityConfig {
                         .requestMatchers("/all/**").permitAll()
                         .requestMatchers("/cars/**").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/cars/**").hasAuthority("ROLE_DRIVER")
+                        .requestMatchers("/bookings/**").authenticated()
 
                         .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/driver/**").hasAuthority("ROLE_DRIVER")
