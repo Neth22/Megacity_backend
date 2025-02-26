@@ -41,7 +41,7 @@ public class CarController {
         return new ResponseEntity<>(carService.getCarById(carId), HttpStatus.OK);
     }
 
-    @PostMapping("/cars/createCar")
+    @PostMapping("/auth/cars/createCar")
     public ResponseEntity<Car> createCar(@RequestParam String carBrand,
                                          @RequestParam String carModel,
                                          @RequestParam String carLicensePlate,
@@ -62,7 +62,7 @@ public class CarController {
                 return ResponseEntity.ok(savedCar);
     }
 
-    @PutMapping("/cars/updateCar/{carId}")
+    @PutMapping("/auth/cars/updateCar/{carId}")
     public ResponseEntity<Car> updateCar(
             @PathVariable String carId,
             @RequestBody Car car) {
@@ -70,7 +70,7 @@ public class CarController {
         return new ResponseEntity<>(updatedCar, HttpStatus.OK);
     }
 
-    @DeleteMapping("/cars/{carId}")
+    @DeleteMapping("/auth/cars/{carId}")
     public ResponseEntity<Void> deleteCar(@PathVariable String carId) {
         carService.deleteCar(carId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
