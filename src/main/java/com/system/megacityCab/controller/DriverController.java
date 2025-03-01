@@ -49,7 +49,7 @@ public class DriverController {
         return driverService.getAllDrivers();
     }
 
-    @GetMapping("/drivers/{id}")
+    @GetMapping("/{driverId}")
     public Driver getDriverById(@PathVariable String driverId) {
         return driverService.getDriverById(driverId);
     }
@@ -90,7 +90,6 @@ public class DriverController {
                 car.setCarModel(carModel);
                 car.setCarBrand(carBrand);
 
-                
                 if (capacity != null) {
                     car.setCapacity(capacity);
                 } else {
@@ -120,6 +119,7 @@ public class DriverController {
                     .body("Error creating driver: " + e.getMessage());
         }
     }
+    
     @PutMapping("/{driverId}/availability")
     public ResponseEntity<Driver> updateAvailability(
             @AuthenticationPrincipal UserDetails userDetails,
@@ -173,6 +173,12 @@ public class DriverController {
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
         return basePath + filename;
+    }
+
+    @PutMapping("/updateDriver/{driverId}")
+    public ResponseEntity<Driver> updateDriver(@PathVariable String driverId, @RequestBody Driver driver) {
+        log.info("Updating driver with ID: {}", driverId);
+        return ResponseEntity.ok(driverService.updateDriver(driverId, driver));
     }
   
 
