@@ -10,12 +10,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.system.megacityCab.dto.LoginDTO;
 import com.system.megacityCab.util.JwtUtil;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = "*")
 public class AuthController {
 
     @Autowired

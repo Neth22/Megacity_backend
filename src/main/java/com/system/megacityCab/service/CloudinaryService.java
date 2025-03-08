@@ -12,29 +12,27 @@ import com.cloudinary.utils.ObjectUtils;
 
 @Service
 public class CloudinaryService {
-    
+
     private final Cloudinary cloudinary;
 
-    public CloudinaryService(@Value("${cloudinary.cloud-name}")String cloudName,
-                            @Value("${cloudinary.api-key}") String apiKey,
-                            @Value("${cloudinary.api-secret}")String apiSecret){
+    public CloudinaryService(@Value("${cloudinary.cloud-name}") String cloudName,
+            @Value("${cloudinary.api-key}") String apiKey,
+            @Value("${cloudinary.api-secret}") String apiSecret) {
 
+        this.cloudinary = new Cloudinary(ObjectUtils.asMap(
 
-            this.cloudinary = new Cloudinary(ObjectUtils.asMap(
+                "cloud_name", cloudName,
+                "api_key", apiKey,
+                "api_secret", apiSecret
 
-            "cloud_name", cloudName,
-            "api_key", apiKey,
-            "api_secret",apiSecret
-                
-            )
+        )
 
-            );
-                            }
+        );
+    }
 
-            public String uploadImage(MultipartFile file)throws IOException{
-                Map uploadResult = cloudinary.uploader().upload(file.getBytes(),ObjectUtils.emptyMap());
-                return uploadResult.get("url").toString();
-            }
+    public String uploadImage(MultipartFile file) throws IOException {
+        Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+        return uploadResult.get("url").toString();
+    }
 
-            
 }

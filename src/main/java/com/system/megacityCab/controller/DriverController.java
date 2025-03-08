@@ -31,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.system.megacityCab.model.Booking;
 import com.system.megacityCab.model.Car;
 import com.system.megacityCab.model.Driver;
+import com.system.megacityCab.service.CloudinaryService;
 import com.system.megacityCab.service.DriverService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +44,9 @@ public class DriverController {
 
     @Autowired
     private DriverService driverService;
+
+    @Autowired
+    private CloudinaryService cloudinaryService;
 
     @GetMapping("/getalldrivers")
     public List<Driver> getAllDrivers() {
@@ -106,7 +110,7 @@ public class DriverController {
                 }
 
                 if(carImage != null && !carImage.isEmpty()){
-                    String carImgUrl = handleImageUpload(carImage, "car");
+                    String carImgUrl = cloudinaryService.uploadImage(carImage);
                     car.setCarImgUrl(carImgUrl);
                 }
             }
@@ -156,23 +160,6 @@ public class DriverController {
 
         driverService.deleteDriver(driverId);
         return ResponseEntity.noContent().build();
-    }
-
-    private String handleImageUpload(MultipartFile file, String type) throws IOException {
-        String filename = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-
-        String basePath = type.equals("driver") ? "drivers/" : "cars/";
-        String uploadDir = "uploads/" + basePath;
-
-        File directory = new File(uploadDir);
-        if (!directory.exists()) {
-            directory.mkdirs();
-        }
-
-        Path filePath = Paths.get(uploadDir + filename);
-        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-        return basePath + filename;
     }
 
     @PutMapping("/updateDriver/{driverId}")
