@@ -40,19 +40,14 @@ public class CarServiceImpl implements CarService{
 
     @Override
     public Car updateCar(String carId, Car car) {
-        Car existingCar = getCarById(carId);
-
+        Car existingCar = carRepository.findById(carId)
+                .orElseThrow(() -> new RuntimeException("Car not found"));
         existingCar.setCarBrand(car.getCarBrand());
         existingCar.setCarModel(car.getCarModel());
         existingCar.setCarLicensePlate(car.getCarLicensePlate());
-        existingCar.setCapacity(car.getCapacity());
-        existingCar.setCarImgUrl(car.getCarImgUrl());
-        existingCar.setAvailable(car.isAvailable());
-        
-
         return carRepository.save(existingCar);
     }
-
+    
    
     
 }
