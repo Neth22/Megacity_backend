@@ -46,6 +46,8 @@ public class CarController {
                                          @RequestParam String carModel,
                                          @RequestParam String carLicensePlate,
                                          @RequestParam int capacity,
+                                         @RequestParam double baseRate,
+                                         @RequestParam double driverRate,
                                          @RequestParam MultipartFile carImg) throws IOException {
         
 
@@ -56,6 +58,8 @@ public class CarController {
                 car.setCarModel(carModel);
                 car.setCarLicensePlate(carLicensePlate);
                 car.setCapacity(capacity);
+                car.setBaseRate(baseRate);
+                car.setDriverRate(driverRate);
                 car.setCarImgUrl(carImgUrl);
   
                 Car savedCar = carService.createCar(car);

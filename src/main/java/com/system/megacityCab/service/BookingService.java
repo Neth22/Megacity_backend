@@ -15,9 +15,9 @@ public interface BookingService {
     List<Booking> getAllBookings();
     Booking getBookingById(String bookingId);
     Booking createBooking(BookingRequest request);
-    Booking cancelBooking (String customerId, CancellationRequest request);
+    Booking cancelBooking(String customerId, CancellationRequest request);
     List<Booking> getCustomerBookings(String customerId);
     Booking getBookingDetails(String customerId, String bookingId);
-    void deleteBooking(String bookingId, String customerId);
+    void deleteBooking(String customerId, String bookingId);
     
 }

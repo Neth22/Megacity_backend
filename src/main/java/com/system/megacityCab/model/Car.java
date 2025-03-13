@@ -25,7 +25,7 @@ public class Car {
     private boolean available = true;
     private double baseRate;
     private double driverRate;
-    private String categoryId;
+    // private String categoryId;
 
     
 }
