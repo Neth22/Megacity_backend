@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,34 +38,47 @@ public class CarController {
         return new ResponseEntity<>(carService.getAllcars(), HttpStatus.OK);
     }
 
-    @GetMapping("/all/getCar/{id}")
-    public ResponseEntity<Car> getCarById(@PathVariable("id") String carId) {
-        return new ResponseEntity<>(carService.getCarById(carId), HttpStatus.OK);
+    @GetMapping("/auth/cars/getCar/{id}")
+    public ResponseEntity<Car> getCarById(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable("id") String carId) {
+        // Get the authenticated user's email
+        String email = userDetails.getUsername();
+
+        // Fetch the car
+        Car car = carService.getCarById(carId);
+
+        // Check if the authenticated user is the assigned driver
+        if (car == null || !email.equals(car.getAssignedDriverId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        return new ResponseEntity<>(car, HttpStatus.OK);
     }
 
     @PostMapping("/auth/cars/createCar")
-    public ResponseEntity<Car> createCar(@RequestParam String carBrand,
-                                         @RequestParam String carModel,
-                                         @RequestParam String carLicensePlate,
-                                         @RequestParam int capacity,
-                                         @RequestParam double baseRate,
-                                         @RequestParam double driverRate,
-                                         @RequestParam MultipartFile carImg) throws IOException {
+    public ResponseEntity<Car> createCar(
+            @RequestParam String carBrand,
+            @RequestParam String carModel,
+            @RequestParam String carLicensePlate,
+            @RequestParam int capacity,
+            @RequestParam double baseRate,
+            @RequestParam double driverRate,
+            @RequestParam MultipartFile carImg) throws IOException {
         
+        String carImgUrl = cloudinaryService.uploadImage(carImg);
 
-                String carImgUrl = cloudinaryService.uploadImage(carImg);
+        Car car = new Car();
+        car.setCarBrand(carBrand);
+        car.setCarModel(carModel);
+        car.setCarLicensePlate(carLicensePlate);
+        car.setCapacity(capacity);
+        car.setBaseRate(baseRate);
+        car.setDriverRate(driverRate);
+        car.setCarImgUrl(carImgUrl);
 
-                Car car = new Car();
-                car.setCarBrand(carBrand);
-                car.setCarModel(carModel);
-                car.setCarLicensePlate(carLicensePlate);
-                car.setCapacity(capacity);
-                car.setBaseRate(baseRate);
-                car.setDriverRate(driverRate);
-                car.setCarImgUrl(carImgUrl);
-  
-                Car savedCar = carService.createCar(car);
-                return ResponseEntity.ok(savedCar);
+        Car savedCar = carService.createCar(car);
+        return ResponseEntity.ok(savedCar);
     }
 
     @PutMapping("/auth/cars/updateCar/{carId}")
@@ -79,5 +94,4 @@ public class CarController {
         carService.deleteCar(carId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 }

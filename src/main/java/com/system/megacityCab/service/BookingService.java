@@ -19,5 +19,8 @@ public interface BookingService {
     List<Booking> getCustomerBookings(String customerId);
     Booking getBookingDetails(String customerId, String bookingId);
     void deleteBooking(String customerId, String bookingId);
+    Booking confirmBooking(String bookingId);
+    List<Booking> getAvailableBookings();
+    boolean hasBookingWithDriver(String customerEmail, String driverId);
     
 }

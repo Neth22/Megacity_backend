@@ -1,8 +1,7 @@
 package com.system.megacityCab.model;
 
-
-
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -20,6 +19,8 @@ public class Booking {
 
     private String customerId;
 
+    private String customerEmail;
+
     private String carId;
 
     private String driverId;
@@ -36,11 +37,23 @@ public class Booking {
 
     private double totalAmount;
 
-    private double tax;
+    
+    private double distance; 
+    private double distanceFare; 
+    private double tax; 
+    private double driverFee; 
+
+    @Transient
+    private String passengerName;
+
+    
 
     private boolean completed = false;
 
     private boolean driverRequired = false;
+
+    // New field to store driver assignment status message
+    private String driverAssignmentMessage;
 
     private BookingStatus status = BookingStatus.PENDING;
 
@@ -52,12 +65,14 @@ public class Booking {
 
     private double refundAmount;
 
-    public boolean canBeCancelled(){
+    @Transient
+    private Driver driverDetails;
+
+    public boolean canBeCancelled() {
         return status == BookingStatus.PENDING || status == BookingStatus.CONFIRMED;
     }
 
     public boolean canBeDeleted() {
         return status == BookingStatus.PENDING || status == BookingStatus.CONFIRMED;
     }
-
 }
